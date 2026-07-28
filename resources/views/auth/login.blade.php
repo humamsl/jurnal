@@ -32,8 +32,15 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="mb-3">
+<<<<<<< HEAD
                 <label class="form-label">Email</label>
                 <input type="email" name="email" value="{{ old('email') }}" class="form-control" required autofocus>
+=======
+                <label class="form-label">Email / NIP / NISN</label>
+                <input type="text" name="login" value="{{ old('login') }}" class="form-control"
+                       placeholder="Email akun, NIP guru, atau NISN siswa" required autofocus>
+                <div class="form-text">Guru/Siswa: masuk memakai NIP/NISN dan password yang sama dengan aplikasi Data Center.</div>
+>>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
             </div>
             <div class="mb-3">
                 <label class="form-label">Kata Sandi</label>

@@ -21,6 +21,10 @@ class User extends Authenticatable
         'password',
         'role',
         'pegawai_id',
+<<<<<<< HEAD
+=======
+        'guru_id',
+>>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
         'siswa_id',
         'aktif',
     ];
@@ -41,6 +45,15 @@ class User extends Authenticatable
         return $this->belongsTo(Pegawai::class, 'pegawai_id');
     }
 
+<<<<<<< HEAD
+=======
+    /** Guru datacenter yang tertaut ke akun ini (login via NIP datacenter). */
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class, 'guru_id');
+    }
+
+>>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
     public function siswa()
     {
         return $this->belongsTo(Siswa::class, 'siswa_id');

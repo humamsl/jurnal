@@ -11,6 +11,24 @@ class OrangTuaController extends BaseCrudController
     protected string $routeName = 'kesiswaan.orang-tua';
     protected string $title = 'Data Orang Tua';
 
+<<<<<<< HEAD
+=======
+    /** Siswa hanya boleh melihat (tanpa tambah/ubah/hapus). */
+    protected function canManage(): bool
+    {
+        return auth()->user() && auth()->user()->isAdmin();
+    }
+
+    /** Siswa hanya melihat data orang tuanya sendiri. */
+    protected function baseQuery()
+    {
+        $user = auth()->user();
+
+        return parent::baseQuery()
+            ->when($user && $user->isSiswa(), fn ($q) => $q->where('siswa_id', $user->siswa_id ?? 0));
+    }
+
+>>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
     protected function fields(): array
     {
         return [
