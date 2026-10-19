@@ -55,14 +55,17 @@
                                 </td>
                             @endif
                         @endforeach
-                        <td class="text-end">
+                        <td class="text-end text-nowrap">
+                            @if($hasDetail ?? false)
+                            <a href="{{ route($routeName.'.show', $item->id) }}" class="btn btn-sm btn-outline-primary" title="Buka"><i class="bi bi-eye"></i>@unless($canManage) Buka @endunless</a>
+                            @endif
                             @if($canManage)
                             <a href="{{ route($routeName.'.edit', $item->id) }}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
                             <form action="{{ route($routeName.'.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus data ini?')">
                                 @csrf @method('DELETE')
                                 <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
                             </form>
-                            @else
+                            @elseif(! ($hasDetail ?? false))
                                 <span class="text-muted small">Lihat saja</span>
                             @endif
                         </td>

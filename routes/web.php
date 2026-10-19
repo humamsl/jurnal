@@ -108,8 +108,10 @@ Route::middleware('auth')->group(function () {
 
     // ================= Ruang Belajar (semua role, aksi kelola dibatasi di controller) =================
     Route::middleware('role:admin,guru,siswa')->prefix('ruangbelajar')->name('ruangbelajar.')->group(function () {
-        Route::resource('materi', MateriOnlineController::class)->except(['show'])->names('materi');
-        Route::resource('tugas', TugasController::class)->except(['show'])->names('tugas');
+        Route::resource('materi', MateriOnlineController::class)->names('materi');
+        Route::resource('tugas', TugasController::class)->names('tugas');
+        Route::post('tugas/{id}/kumpulkan', [TugasController::class, 'kumpulkan'])->name('tugas.kumpulkan');
+        Route::put('tugas/{id}/pengumpulan/{pengumpulanId}/nilai', [TugasController::class, 'nilai'])->name('tugas.nilai');
     });
 
     // ================= Absensi =================

@@ -29,6 +29,12 @@ abstract class BaseCrudController extends Controller
     protected int $perPage = 10;
 
     /**
+     * Tampilkan tombol "Buka" ke route "{routeName}.show" di tiap baris.
+     * Controller turunan yang mengaktifkannya wajib punya method show().
+     */
+    protected bool $hasDetail = false;
+
+    /**
      * Apakah user saat ini boleh tambah/ubah/hapus data (bukan hanya lihat).
      * Override di controller turunan bila perlu dibatasi (mis. siswa read-only).
      */
@@ -112,6 +118,7 @@ abstract class BaseCrudController extends Controller
             'routeName' => $this->routeName,
             'q' => $request->input('q'),
             'canManage' => $this->canManage(),
+            'hasDetail' => $this->hasDetail,
             'extraActions' => $this->extraActions(),
         ]);
     }

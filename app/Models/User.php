@@ -26,6 +26,9 @@ class User extends Authenticatable
         'aktif',
     ];
 
+    /** Cache per-request untuk kelasIdSiswa(). */
+    private ?int $kelasIdSiswaCache = null;
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -66,5 +69,21 @@ class User extends Authenticatable
     public function isSiswa(): bool
     {
         return $this->role === self::ROLE_SISWA;
+    }
+
+    /**
+     * Id kelas (rombongan_belajar datacenter) siswa saat ini, dipakai untuk
+     * membatasi materi/tugas yang boleh dilihat siswa. Null bila belum
+     * ditempatkan di rombel mana pun.
+     */
+    public function kelasIdSiswa(): ?int
+    {
+        if (! $this->isSiswa() || ! $this->siswa_id) {
+            return null;
+        }
+
+        return $this->kelasIdSiswaCache ??= SiswaRombel::where('siswa_id', $this->siswa_id)
+            ->orderByDesc('tahun_ajaran_id')
+            ->value('rombongan_belajar_id');
     }
 }

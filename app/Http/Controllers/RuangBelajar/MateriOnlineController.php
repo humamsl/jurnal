@@ -5,6 +5,7 @@ namespace App\Http\Controllers\RuangBelajar;
 use App\Http\Controllers\Concerns\FilterPenugasanGuru;
 use App\Http\Controllers\Crud\BaseCrudController;
 use App\Models\MateriOnline;
+use Illuminate\View\View;
 
 class MateriOnlineController extends BaseCrudController
 {
@@ -13,19 +14,36 @@ class MateriOnlineController extends BaseCrudController
     protected string $model = MateriOnline::class;
     protected string $routeName = 'ruangbelajar.materi';
     protected string $title = 'Materi Online';
+    protected bool $hasDetail = true;
 
     protected function canManage(): bool
     {
         return auth()->user() && ! auth()->user()->isSiswa();
     }
 
-    /** Guru hanya melihat materi yang diunggah dirinya sendiri. */
+    /**
+     * Guru hanya melihat materi yang diunggah dirinya sendiri; siswa hanya
+     * melihat materi untuk kelasnya.
+     */
     protected function baseQuery()
     {
         $user = auth()->user();
 
         return parent::baseQuery()
-            ->when($user && $user->isGuru() && $user->guru_id, fn ($q) => $q->where('pegawai_id', $user->guru_id));
+            ->when($user && $user->isGuru() && $user->guru_id, fn ($q) => $q->where('pegawai_id', $user->guru_id))
+            ->when($user && $user->isSiswa(), fn ($q) => $q->where('kelas_id', $user->kelasIdSiswa() ?? 0));
+    }
+
+    public function show(int|string $id): View
+    {
+        $item = $this->baseQuery()->with(['mataPelajaran', 'kelas', 'pegawai'])->findOrFail($id);
+
+        return view('ruangbelajar.materi-show', [
+            'item' => $item,
+            'title' => $this->title,
+            'routeName' => $this->routeName,
+            'canManage' => $this->canManage(),
+        ]);
     }
 
     protected function fields(): array

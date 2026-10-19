@@ -96,7 +96,7 @@
             <tbody>
                 @forelse($tugasTerbaru as $t)
                 <tr>
-                    <td>{{ $t->judul }}</td>
+                    <td><a href="{{ route('ruangbelajar.tugas.show', $t->id) }}">{{ $t->judul }}</a></td>
                     <td>{{ $t->mataPelajaran->nama_mapel ?? '-' }}</td>
                     <td>{{ $t->kelas->nama_rombel ?? '-' }}</td>
                     <td>{{ optional($t->tanggal_selesai)->translatedFormat('d M Y') ?? '-' }}</td>

@@ -42,4 +42,15 @@ class Tugas extends Model
     {
         return $this->belongsTo(Guru::class, 'pegawai_id');
     }
+
+    public function pengumpulan()
+    {
+        return $this->hasMany(PengumpulanTugas::class);
+    }
+
+    /** Masih dalam batas waktu (sampai akhir hari tanggal_selesai). */
+    public function masihDibuka(): bool
+    {
+        return ! $this->tanggal_selesai || now()->lte($this->tanggal_selesai->copy()->endOfDay());
+    }
 }
