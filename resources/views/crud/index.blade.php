@@ -50,7 +50,7 @@
                                     @elseif($field['type'] === 'checkbox')
                                         {{ $item->{$field['name']} ? 'Ya' : 'Tidak' }}
                                     @else
-                                        {{ Illuminate\Support\Str::limit($val, 60) }}
+                                        {{ \App\Support\TeksKaya::ringkas($val, 60) }}
                                     @endif
                                 </td>
                             @endif

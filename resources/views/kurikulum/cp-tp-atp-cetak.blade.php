@@ -12,7 +12,7 @@
         table.data th, table.data td { border: 1px solid #333; padding: 5px 6px; vertical-align: top; }
         table.data th { background: #f0f0f0; text-align: center; }
         td.tengah { text-align: center; white-space: nowrap; }
-        td.isi { white-space: pre-wrap; }
+        td.isi { white-space: normal; }
         @media print { body { margin: 0; } }
     </style>
 </head>
@@ -44,9 +44,9 @@
                 <td>{{ optional($p->mataPelajaran)->nama_mapel ?? '-' }}</td>
                 <td class="tengah">{{ optional($p->tingkatKelas)->nama ?? optional($p->tingkatKelas)->kode ?? '-' }}</td>
                 <td class="tengah">{{ $p->fase ?: '-' }}</td>
-                <td class="isi">{{ $p->capaian_pembelajaran }}</td>
-                <td class="isi">{{ $p->tujuan_pembelajaran }}</td>
-                <td class="isi">{{ $p->alur_tujuan_pembelajaran }}</td>
+                <td class="isi">{!! \App\Support\TeksKaya::html($p->capaian_pembelajaran) !!}</td>
+                <td class="isi">{!! \App\Support\TeksKaya::html($p->tujuan_pembelajaran) !!}</td>
+                <td class="isi">{!! \App\Support\TeksKaya::html($p->alur_tujuan_pembelajaran) !!}</td>
                 <td class="tengah">{{ $p->tahun_ajaran ?: '-' }}</td>
             </tr>
             @empty

@@ -33,7 +33,7 @@
         </div>
 
         @if($item->deskripsi)
-            <div class="mb-0">{!! nl2br(e($item->deskripsi)) !!}</div>
+            <div class="mb-0">{!! \App\Support\TeksKaya::html($item->deskripsi) !!}</div>
         @else
             <div class="text-muted fst-italic">Tidak ada deskripsi.</div>
         @endif

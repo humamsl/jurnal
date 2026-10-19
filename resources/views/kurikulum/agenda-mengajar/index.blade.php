@@ -79,7 +79,7 @@
                     <td class="text-center">{{ optional($a->kelas)->nama_rombel ?? '-' }}</td>
                     <td class="text-center">{{ $a->paralel ?: '-' }}</td>
                     <td>{{ optional($a->mataPelajaran)->nama_mapel ?? '-' }}</td>
-                    <td>{{ $a->materi }}</td>
+                    <td>{!! \App\Support\TeksKaya::html($a->materi) !!}</td>
                     <td class="text-center">{{ $a->jumlah_siswa }}</td>
                     <td class="text-center">{{ $a->hadir }}</td>
                     <td class="text-center">{{ $a->absen }}</td>
@@ -93,7 +93,7 @@
                             -
                         @endif
                     </td>
-                    <td>{{ $a->catatan }}</td>
+                    <td>{!! \App\Support\TeksKaya::html($a->catatan) !!}</td>
                 </tr>
             @empty
                 <tr><td colspan="16" class="text-center text-muted py-4">Belum ada agenda mengajar. Klik "Isi Agenda Mengajar" untuk menambah.</td></tr>

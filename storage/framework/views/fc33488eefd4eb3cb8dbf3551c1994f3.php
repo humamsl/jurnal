@@ -43,7 +43,7 @@
 
         <h3 class="h6 fw-semibold">Instruksi</h3>
         <?php if($tugas->deskripsi): ?>
-            <div class="mb-3"><?php echo nl2br(e($tugas->deskripsi)); ?></div>
+            <div class="mb-3"><?php echo \App\Support\TeksKaya::html($tugas->deskripsi); ?></div>
         <?php else: ?>
             <div class="text-muted fst-italic mb-3">Tidak ada instruksi tertulis.</div>
         <?php endif; ?>
@@ -82,12 +82,12 @@
                 <div class="small text-muted">Nilai</div>
                 <div class="display-6 fw-bold text-primary"><?php echo e(rtrim(rtrim(number_format($pengumpulan->nilai, 2, ',', ''), '0'), ',')); ?></div>
                 <?php if($pengumpulan->catatan_guru): ?>
-                    <div class="mt-2"><span class="small text-muted d-block">Catatan guru</span><?php echo nl2br(e($pengumpulan->catatan_guru)); ?></div>
+                    <div class="mt-2"><span class="small text-muted d-block">Catatan guru</span><?php echo \App\Support\TeksKaya::html($pengumpulan->catatan_guru); ?></div>
                 <?php endif; ?>
             </div>
             <?php if($pengumpulan->jawaban): ?>
                 <h3 class="h6 fw-semibold">Jawaban</h3>
-                <div class="mb-3"><?php echo nl2br(e($pengumpulan->jawaban)); ?></div>
+                <div class="mb-3"><?php echo \App\Support\TeksKaya::html($pengumpulan->jawaban); ?></div>
             <?php endif; ?>
             <?php if($pengumpulan->file): ?>
                 <a href="<?php echo e(Storage::url($pengumpulan->file)); ?>" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-file-earmark me-1"></i>File Jawaban</a>
@@ -170,8 +170,8 @@
                             <?php if($p): ?>
                                 <?php if($p->jawaban): ?>
                                     <details>
-                                        <summary class="small"><?php echo e(Illuminate\Support\Str::limit($p->jawaban, 50)); ?></summary>
-                                        <div class="small mt-1"><?php echo nl2br(e($p->jawaban)); ?></div>
+                                        <summary class="small"><?php echo e(\App\Support\TeksKaya::ringkas($p->jawaban, 50)); ?></summary>
+                                        <div class="small mt-1"><?php echo \App\Support\TeksKaya::html($p->jawaban); ?></div>
                                     </details>
                                 <?php endif; ?>
                                 <?php if($p->file): ?>

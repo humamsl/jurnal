@@ -51,7 +51,7 @@
                                         <?php echo e($item->{$field['name']} ? 'Ya' : 'Tidak'); ?>
 
                                     <?php else: ?>
-                                        <?php echo e(Illuminate\Support\Str::limit($val, 60)); ?>
+                                        <?php echo e(\App\Support\TeksKaya::ringkas($val, 60)); ?>
 
                                     <?php endif; ?>
                                 </td>

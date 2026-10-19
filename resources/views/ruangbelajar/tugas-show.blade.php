@@ -44,7 +44,7 @@
 
         <h3 class="h6 fw-semibold">Instruksi</h3>
         @if($tugas->deskripsi)
-            <div class="mb-3">{!! nl2br(e($tugas->deskripsi)) !!}</div>
+            <div class="mb-3">{!! \App\Support\TeksKaya::html($tugas->deskripsi) !!}</div>
         @else
             <div class="text-muted fst-italic mb-3">Tidak ada instruksi tertulis.</div>
         @endif
@@ -82,12 +82,12 @@
                 <div class="small text-muted">Nilai</div>
                 <div class="display-6 fw-bold text-primary">{{ rtrim(rtrim(number_format($pengumpulan->nilai, 2, ',', ''), '0'), ',') }}</div>
                 @if($pengumpulan->catatan_guru)
-                    <div class="mt-2"><span class="small text-muted d-block">Catatan guru</span>{!! nl2br(e($pengumpulan->catatan_guru)) !!}</div>
+                    <div class="mt-2"><span class="small text-muted d-block">Catatan guru</span>{!! \App\Support\TeksKaya::html($pengumpulan->catatan_guru) !!}</div>
                 @endif
             </div>
             @if($pengumpulan->jawaban)
                 <h3 class="h6 fw-semibold">Jawaban</h3>
-                <div class="mb-3">{!! nl2br(e($pengumpulan->jawaban)) !!}</div>
+                <div class="mb-3">{!! \App\Support\TeksKaya::html($pengumpulan->jawaban) !!}</div>
             @endif
             @if($pengumpulan->file)
                 <a href="{{ Storage::url($pengumpulan->file) }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-file-earmark me-1"></i>File Jawaban</a>
@@ -169,8 +169,8 @@
                             @if($p)
                                 @if($p->jawaban)
                                     <details>
-                                        <summary class="small">{{ Illuminate\Support\Str::limit($p->jawaban, 50) }}</summary>
-                                        <div class="small mt-1">{!! nl2br(e($p->jawaban)) !!}</div>
+                                        <summary class="small">{{ \App\Support\TeksKaya::ringkas($p->jawaban, 50) }}</summary>
+                                        <div class="small mt-1">{!! \App\Support\TeksKaya::html($p->jawaban) !!}</div>
                                     </details>
                                 @endif
                                 @if($p->file)

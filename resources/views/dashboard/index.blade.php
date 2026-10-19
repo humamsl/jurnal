@@ -66,7 +66,7 @@
                     <td>{{ $a->jam_ke ?: '-' }}</td>
                     <td>{{ optional($a->kelas)->nama_rombel ?? '-' }}</td>
                     <td>{{ optional($a->mataPelajaran)->nama_mapel ?? '-' }}</td>
-                    <td>{{ Illuminate\Support\Str::limit($a->materi, 40) }}</td>
+                    <td>{{ \App\Support\TeksKaya::ringkas($a->materi, 40) }}</td>
                     <td class="text-center"><span class="text-success fw-semibold">{{ $a->hadir }}</span> / <span class="text-danger fw-semibold">{{ $a->absen }}</span></td>
                     <td>
                         @php($badge = ['Disetujui' => 'bg-success', 'Ditolak' => 'bg-danger'][$a->status] ?? 'bg-warning text-dark')
