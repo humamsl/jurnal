@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-=======
 use App\Models\AgendaMengajar;
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
 use App\Models\Guru;
 use App\Models\GuruMapel;
 use App\Models\MataPelajaran;
@@ -29,8 +26,6 @@ class DashboardController extends Controller
             'guru_mapel' => GuruMapel::count(),
         ];
 
-<<<<<<< HEAD
-=======
         // Agenda mengajar yang diisi hari ini (untuk tabel di dashboard admin).
         $agendaHariIni = collect();
         if ($user->isAdmin()) {
@@ -40,7 +35,6 @@ class DashboardController extends Controller
                 ->get();
         }
 
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
         $tugasTerbaru = collect();
         if (! $user->isAdmin()) {
             $query = Tugas::with(['mataPelajaran', 'kelas'])->latest();
@@ -55,10 +49,6 @@ class DashboardController extends Controller
             $tugasTerbaru = $query->limit(5)->get();
         }
 
-<<<<<<< HEAD
-        return view('dashboard.index', compact('stats', 'tugasTerbaru'));
-=======
         return view('dashboard.index', compact('stats', 'tugasTerbaru', 'agendaHariIni'));
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
     }
 }

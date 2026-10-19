@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers\Kurikulum;
 
-<<<<<<< HEAD
-=======
 use App\Http\Controllers\Concerns\FilterPenugasanGuru;
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
 use App\Http\Controllers\Controller;
 use App\Models\MataPelajaran;
 use App\Models\ModulAjar;
@@ -23,37 +20,21 @@ use Illuminate\View\View;
  */
 class ModulAjarController extends Controller
 {
-<<<<<<< HEAD
-=======
     use FilterPenugasanGuru;
 
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
     public function index(Request $request): View
     {
         $tahunList = TahunAjaran::orderByDesc('nama_tahun_ajaran')->get();
 
         // Pemetaan CP-TP-ATP dikirim ke halaman sebagai JSON untuk dropdown
         // bertingkat CP -> TP -> ATP (difilter di sisi klien per mapel+tingkat).
-<<<<<<< HEAD
-        $pemetaanList = PemetaanCpTpAtp::get([
-=======
         $pemetaanList = PemetaanCpTpAtp::query()
             ->when($this->mapelIdsGuru() !== null, fn ($q) => $q->whereIn('mata_pelajaran_id', $this->mapelIdsGuru()))
             ->get([
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
             'id', 'mata_pelajaran_id', 'tingkat_kelas_id',
             'capaian_pembelajaran', 'tujuan_pembelajaran', 'alur_tujuan_pembelajaran',
         ]);
 
-<<<<<<< HEAD
-        return view('kurikulum.modul-ajar', [
-            'mapelList' => MataPelajaran::orderBy('nama_mapel')->get(),
-            'tingkatList' => TingkatKelas::orderBy('urutan')->get(),
-            'tahunList' => $tahunList,
-            'tahunAktif' => $tahunList->firstWhere('is_aktif', true),
-            'pemetaanJson' => $pemetaanList->toJson(JSON_UNESCAPED_UNICODE),
-            'items' => ModulAjar::with(['mataPelajaran', 'tingkatKelas', 'pegawai'])->latest()->get(),
-=======
         // Untuk guru, pilihan mapel & tingkat dibatasi sesuai penugasan di
         // menu Data Guru Mata Pelajaran (datacenter); admin melihat semua.
         $mapelIds = $this->mapelIdsGuru();
@@ -70,7 +51,6 @@ class ModulAjarController extends Controller
             'items' => ModulAjar::with(['mataPelajaran', 'tingkatKelas', 'pegawai'])
                 ->when($mapelIds !== null, fn ($q) => $q->whereIn('mata_pelajaran_id', $mapelIds))
                 ->latest()->get(),
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
         ]);
     }
 

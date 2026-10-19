@@ -67,15 +67,11 @@ Route::middleware('auth')->group(function () {
     // ================= Kesiswaan (admin) =================
     Route::middleware('role:admin')->prefix('kesiswaan')->name('kesiswaan.')->group(function () {
         Route::resource('siswa', SiswaController::class)->except(['show'])->names('siswa');
-<<<<<<< HEAD
-        Route::resource('orang-tua', OrangTuaController::class)->except(['show'])->names('orang-tua');
-=======
         Route::resource('orang-tua', OrangTuaController::class)->except(['show', 'index'])->names('orang-tua');
     });
     // Daftar orang tua boleh dilihat siswa (read-only, hanya data dirinya).
     Route::middleware('role:admin,siswa')->prefix('kesiswaan')->name('kesiswaan.')->group(function () {
         Route::get('orang-tua', [OrangTuaController::class, 'index'])->name('orang-tua.index');
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
     });
 
     // ================= Kurikulum (admin & guru) =================
@@ -92,11 +88,8 @@ Route::middleware('auth')->group(function () {
         Route::get('cp-tp-atp-import', [PemetaanCpTpAtpImportController::class, 'form'])->name('cp-tp-atp-import.form');
         Route::post('cp-tp-atp-import', [PemetaanCpTpAtpImportController::class, 'import'])->name('cp-tp-atp-import.store');
         Route::get('cp-tp-atp-import/template', [PemetaanCpTpAtpImportController::class, 'template'])->name('cp-tp-atp-import.template');
-<<<<<<< HEAD
-=======
         Route::get('cp-tp-atp-cetak/pdf', [PemetaanCpTpAtpController::class, 'pdf'])->name('cp-tp-atp-cetak.pdf');
         Route::get('cp-tp-atp-cetak/word', [PemetaanCpTpAtpController::class, 'word'])->name('cp-tp-atp-cetak.word');
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
         Route::get('modul-ajar', [ModulAjarController::class, 'index'])->name('modul-ajar.index');
         Route::post('modul-ajar', [ModulAjarController::class, 'store'])->name('modul-ajar.store');
         Route::delete('modul-ajar/{id}', [ModulAjarController::class, 'destroy'])->name('modul-ajar.destroy');

@@ -35,8 +35,6 @@
         </div>
     </div>
 </div>
-<<<<<<< HEAD
-=======
 
 {{-- Agenda mengajar yang diisi guru pada hari berjalan --}}
 <div class="card shadow-sm mb-4">
@@ -85,7 +83,6 @@
         <a href="{{ route('kurikulum.agenda.index') }}" class="btn btn-sm btn-outline-primary">Lihat Semua Agenda <i class="bi bi-arrow-right ms-1"></i></a>
     </div>
 </div>
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
 @endcan
 
 @if(!auth()->user()->isAdmin())

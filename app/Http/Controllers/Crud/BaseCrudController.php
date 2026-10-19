@@ -203,15 +203,11 @@ abstract class BaseCrudController extends Controller
                 // get()->pluck() (bukan pluck() langsung di query builder) supaya
                 // $display boleh berupa accessor (mis. atribut "label" hasil
                 // Attribute::make()), bukan hanya kolom asli di tabel.
-<<<<<<< HEAD
-                $field['options'] = ($relModel)::orderBy($orderBy)->get()->pluck($display, 'id')->all();
-=======
                 // 'ids' (opsional) membatasi pilihan ke id tertentu, mis.
                 // mapel/kelas sesuai penugasan guru yang sedang login.
                 $field['options'] = ($relModel)::orderBy($orderBy)
                     ->when(isset($field['relation']['ids']), fn ($q) => $q->whereIn('id', $field['relation']['ids']))
                     ->get()->pluck($display, 'id')->all();
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
             }
 
             // Untuk field yang menyimpan teks langsung (bukan id relasi), tapi pilihannya

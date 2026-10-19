@@ -2,13 +2,6 @@
 
 namespace App\Http\Controllers\Kurikulum;
 
-<<<<<<< HEAD
-use App\Http\Controllers\Crud\BaseCrudController;
-use App\Models\PemetaanCpTpAtp;
-
-class PemetaanCpTpAtpController extends BaseCrudController
-{
-=======
 use App\Http\Controllers\Concerns\FilterPenugasanGuru;
 use App\Http\Controllers\Crud\BaseCrudController;
 use App\Models\IdentitasSekolah;
@@ -30,7 +23,6 @@ class PemetaanCpTpAtpController extends BaseCrudController
             ->when($tingkatIds !== null, fn ($q) => $q->whereIn('tingkat_kelas_id', $tingkatIds));
     }
 
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
     protected string $model = PemetaanCpTpAtp::class;
     protected string $routeName = 'kurikulum.cp-tp-atp';
     protected string $title = 'Pemetaan CP-TP-ATP';
@@ -39,16 +31,6 @@ class PemetaanCpTpAtpController extends BaseCrudController
     {
         return [
             ['label' => 'Import Excel', 'url' => route('kurikulum.cp-tp-atp-import.form'), 'icon' => 'bi-upload'],
-<<<<<<< HEAD
-        ];
-    }
-
-    protected function fields(): array
-    {
-        return [
-            ['name' => 'mata_pelajaran_id', 'label' => 'Mata Pelajaran', 'type' => 'select', 'rules' => 'required|integer', 'relation' => ['method' => 'mataPelajaran', 'model' => \App\Models\MataPelajaran::class, 'display' => 'nama_mapel']],
-            ['name' => 'tingkat_kelas_id', 'label' => 'Tingkat Kelas', 'type' => 'select', 'rules' => 'required|integer', 'relation' => ['method' => 'tingkatKelas', 'model' => \App\Models\TingkatKelas::class, 'display' => 'nama']],
-=======
             ['label' => 'Cetak PDF', 'url' => route('kurikulum.cp-tp-atp-cetak.pdf', request()->only('q')), 'icon' => 'bi-file-earmark-pdf'],
             ['label' => 'Cetak Word', 'url' => route('kurikulum.cp-tp-atp-cetak.word', request()->only('q')), 'icon' => 'bi-file-earmark-word'],
         ];
@@ -120,7 +102,6 @@ class PemetaanCpTpAtpController extends BaseCrudController
         return [
             ['name' => 'mata_pelajaran_id', 'label' => 'Mata Pelajaran', 'type' => 'select', 'rules' => 'required|integer', 'relation' => ['method' => 'mataPelajaran', 'model' => \App\Models\MataPelajaran::class, 'display' => 'nama_mapel'] + $this->idsFilter($this->mapelIdsGuru())],
             ['name' => 'tingkat_kelas_id', 'label' => 'Tingkat Kelas', 'type' => 'select', 'rules' => 'required|integer', 'relation' => ['method' => 'tingkatKelas', 'model' => \App\Models\TingkatKelas::class, 'display' => 'nama'] + $this->idsFilter($this->tingkatIdsGuru())],
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
             ['name' => 'fase', 'label' => 'Fase', 'type' => 'select', 'rules' => 'nullable|string', 'options' => ['A' => 'Fase A', 'B' => 'Fase B', 'C' => 'Fase C', 'D' => 'Fase D', 'E' => 'Fase E', 'F' => 'Fase F']],
             ['name' => 'capaian_pembelajaran', 'label' => 'Capaian Pembelajaran (CP)', 'type' => 'textarea', 'rules' => 'required|string'],
             ['name' => 'tujuan_pembelajaran', 'label' => 'Tujuan Pembelajaran (TP)', 'type' => 'textarea', 'rules' => 'required|string'],
