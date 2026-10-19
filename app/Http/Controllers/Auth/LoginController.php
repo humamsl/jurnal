@@ -3,20 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-<<<<<<< HEAD
-=======
 use App\Models\Guru;
 use App\Models\Siswa;
 use App\Models\User;
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-<<<<<<< HEAD
-=======
 use Illuminate\Support\Facades\Hash;
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
 use Illuminate\View\View;
 
 class LoginController extends Controller
@@ -29,19 +23,6 @@ class LoginController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-<<<<<<< HEAD
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ], [], [
-            'email' => 'Email',
-            'password' => 'Kata Sandi',
-        ]);
-
-        if (! Auth::attempt($credentials, $request->boolean('remember'))) {
-            return back()->withErrors([
-                'email' => 'Email atau kata sandi yang Anda masukkan salah.',
-            ])->onlyInput('email');
-=======
             'login' => ['required', 'string'],
             'password' => ['required'],
         ], [], [
@@ -63,7 +44,6 @@ class LoginController extends Controller
             return back()->withErrors([
                 'login' => 'Email/NIP/NISN atau kata sandi yang Anda masukkan salah.',
             ])->onlyInput('login');
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
         }
 
         $request->session()->regenerate();
@@ -71,19 +51,13 @@ class LoginController extends Controller
         if (! $request->user()->aktif) {
             Auth::logout();
             return back()->withErrors([
-<<<<<<< HEAD
-                'email' => 'Akun Anda tidak aktif. Hubungi administrator.',
-=======
                 'login' => 'Akun Anda tidak aktif. Hubungi administrator.',
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
             ]);
         }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
-<<<<<<< HEAD
-=======
     /**
      * Autentikasi guru terhadap tabel "guru" database datacenter (NIP +
      * password yang sama dengan login di aplikasi datacenter). Bila cocok,
@@ -91,11 +65,14 @@ class LoginController extends Controller
      */
     private function loginGuruDatacenter(string $login, string $password, bool $remember): bool
     {
+        // NIP bisa dobel (mis. "-" / placeholder), jadi cek semua kandidat
+        // dan ambil yang password-nya cocok.
         $guru = Guru::where('nip', $login)
             ->orWhere('email', $login)
-            ->first();
+            ->get()
+            ->first(fn ($g) => $g->is_aktif && $g->password && Hash::check($password, $g->password));
 
-        if (! $guru || ! $guru->is_aktif || ! $guru->password || ! Hash::check($password, $guru->password)) {
+        if (! $guru) {
             return false;
         }
 
@@ -106,12 +83,12 @@ class LoginController extends Controller
         $user->password = $password; // di-hash otomatis oleh cast "hashed"
 
         // Email lokal harus unik; pakai email guru bila ada dan belum dipakai
-        // akun lain, selain itu pakai email sintetis berbasis NIP.
-        $emailGuru = $guru->email;
-        $emailDipakai = $emailGuru && User::where('email', $emailGuru)
-            ->where(fn ($q) => $q->whereNull('guru_id')->orWhere('guru_id', '!=', $guru->id))
-            ->exists();
-        $user->email = ($emailGuru && ! $emailDipakai) ? $emailGuru : $guru->nip.'@guru.datacenter';
+        // akun lain, lalu email sintetis berbasis NIP, terakhir berbasis id.
+        $user->email = $this->emailUnik($user, [
+            $guru->email,
+            $guru->nip ? $guru->nip.'@guru.datacenter' : null,
+            'guru'.$guru->id.'@guru.datacenter',
+        ]);
 
         $user->save();
 
@@ -127,11 +104,14 @@ class LoginController extends Controller
      */
     private function loginSiswaDatacenter(string $login, string $password, bool $remember): bool
     {
+        // NISN bisa dobel (mis. placeholder "99999"), jadi cek semua kandidat
+        // dan ambil yang password-nya cocok.
         $siswa = Siswa::where('nisn', $login)
             ->orWhere('email', $login)
-            ->first();
+            ->get()
+            ->first(fn ($s) => $s->is_aktif && $s->password && Hash::check($password, $s->password));
 
-        if (! $siswa || ! $siswa->is_aktif || ! $siswa->password || ! Hash::check($password, $siswa->password)) {
+        if (! $siswa) {
             return false;
         }
 
@@ -141,11 +121,11 @@ class LoginController extends Controller
         $user->aktif = true;
         $user->password = $password; // di-hash otomatis oleh cast "hashed"
 
-        $emailSiswa = $siswa->email;
-        $emailDipakai = $emailSiswa && User::where('email', $emailSiswa)
-            ->where(fn ($q) => $q->whereNull('siswa_id')->orWhere('siswa_id', '!=', $siswa->id))
-            ->exists();
-        $user->email = ($emailSiswa && ! $emailDipakai) ? $emailSiswa : $siswa->nisn.'@siswa.datacenter';
+        $user->email = $this->emailUnik($user, [
+            $siswa->email,
+            $siswa->nisn ? $siswa->nisn.'@siswa.datacenter' : null,
+            'siswa'.$siswa->id.'@siswa.datacenter',
+        ]);
 
         $user->save();
 
@@ -154,7 +134,27 @@ class LoginController extends Controller
         return true;
     }
 
->>>>>>> ef6026ffe285d4d1bfa9854402ab9ac13ce5328f
+    /**
+     * Ambil kandidat email pertama yang belum dipakai akun lain. Kandidat
+     * terakhir berbasis id datacenter sehingga dijamin unik.
+     */
+    private function emailUnik(User $user, array $kandidat): string
+    {
+        $kandidat = array_values(array_filter($kandidat));
+
+        foreach ($kandidat as $email) {
+            $dipakai = User::where('email', $email)
+                ->when($user->exists, fn ($q) => $q->where('id', '!=', $user->id))
+                ->exists();
+
+            if (! $dipakai) {
+                return $email;
+            }
+        }
+
+        return end($kandidat);
+    }
+
     public function destroy(Request $request): RedirectResponse
     {
         Auth::logout();
